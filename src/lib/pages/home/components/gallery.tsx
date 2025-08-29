@@ -11,21 +11,26 @@ export const Gallery = ({ images, galleryRef }: GalleryProps) => {
   return (
     <>
       {images.length > 0 && (
-        <div ref={galleryRef} className="flex flex-wrap gap-2 mt-4 w-[80vh]">
+        <div
+          ref={galleryRef}
+          className="flex flex-wrap gap-2 mt-4 w-full max-w-[80vh] justify-center sm:gap-3 sm:max-w-[80vw]"
+        >
           {images.map((src, idx) => (
             <button
               type="button"
               key={src}
-              className="p-0 border-none bg-none cursor-pointer"
+              className="p-0 border-none bg-none cursor-pointer w-[45vw] sm:w-[15vh] min-h-[20vh] flex flex-col items-center"
               onClick={() => setPreviewIdx(idx)}
               tabIndex={0}
               aria-label={`Preview frame ${idx + 1}`}
             >
-              <h2 className="text-white text-2xl font-bold">Frame {idx + 1}</h2>
+              <h2 className="text-white text-base sm:text-2xl font-bold mb-1">
+                Frame {idx + 1}
+              </h2>
               <img
                 src={src}
                 alt={`Frame ${idx + 1}`}
-                className="max-w-[15vh] min-h-[20vh] aspect-auto border border-gray-400 block"
+                className="w-full max-w-[15vh] min-h-[20vh] aspect-auto border border-gray-400 block rounded"
               />
             </button>
           ))}
@@ -52,7 +57,7 @@ export const Gallery = ({ images, galleryRef }: GalleryProps) => {
           <img
             src={images[previewIdx]}
             alt={`Frame ${previewIdx + 1}`}
-            className="max-w-[54vh] min-h-[72vh] aspect-auto border-4 border-white shadow-2xl bg-gray-900 block"
+            className="w-[90vw] max-w-[54vh] min-h-[40vh] sm:min-h-[72vh] aspect-auto border-4 border-white shadow-2xl bg-gray-900 block rounded"
           />
         </dialog>
       )}
