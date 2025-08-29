@@ -7,6 +7,7 @@ import { routeTree } from './routeTree.gen';
 
 import '@/lib/styles/globals.css';
 
+import { CameraProvider } from '@/camera-context';
 import Page404 from '@/lib/pages/404';
 
 // Create a new router instance
@@ -38,7 +39,9 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <CameraProvider>
+        <RouterProvider router={router} />
+      </CameraProvider>
     </StrictMode>,
   );
 }
