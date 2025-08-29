@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useTheme } from '@/lib/components/theme-provider';
 import { ONE_SEC_IN_MS } from '@/lib/constants';
-import { PatternRecorder } from '@/lib/pages/home/components/video';
+import { Video } from '@/lib/pages/home/components/video';
 
 const Home = () => {
   const { setTheme, theme } = useTheme();
@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center gap-8 text-center">
-      <PatternRecorder />
+      <Video />
     </div>
   );
 };
