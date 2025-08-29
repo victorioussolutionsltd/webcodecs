@@ -99,57 +99,40 @@ export function PatternRecorder() {
   }, [videoEncoder, startCamera, stopCamera]);
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ display: 'flex', gap: 8 }}>
+    <div className="grid gap-3">
+      <div className="flex gap-2">
         <button
           type="button"
           onClick={recordPattern}
           disabled={recording.current}
+          className={
+            recording.current
+              ? 'px-6 py-3 text-xl font-bold rounded-lg border-none bg-gradient-to-r from-gray-400 to-gray-300 text-white shadow-md cursor-not-allowed mb-2 transition'
+              : 'px-6 py-3 text-xl font-bold rounded-lg border-none bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg cursor-pointer mb-2 transition hover:from-cyan-400 hover:to-blue-400 focus:outline-none'
+          }
         >
           {recording.current ? 'Recording...' : 'Record 10s Pattern'}
         </button>
       </div>
-      <video ref={liveRef} autoPlay muted playsInline style={{ width: 480 }} />
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      <video ref={liveRef} autoPlay muted playsInline className="w-[480px]" />
+      <canvas ref={canvasRef} className="hidden" />
 
       {decodedImages.length > 0 && (
-        <div
-          ref={galleryRef}
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 8,
-            marginTop: 16,
-            width: '80vh',
-          }}
-        >
+        <div ref={galleryRef} className="flex flex-wrap gap-2 mt-4 w-[80vh]">
           {decodedImages.map((src, idx) => (
             <button
               type="button"
               key={src}
-              style={{
-                padding: 0,
-                border: 'none',
-                background: 'none',
-                cursor: 'pointer',
-              }}
+              className="p-0 border-none bg-none cursor-pointer"
               onClick={() => setPreviewIdx(idx)}
               tabIndex={0}
               aria-label={`Preview frame ${idx + 1}`}
             >
-              <h2 style={{ color: '#fff', fontSize: 28, fontWeight: 600 }}>
-                Frame {idx + 1}
-              </h2>
+              <h2 className="text-white text-2xl font-bold">Frame {idx + 1}</h2>
               <img
                 src={src}
                 alt={`Frame ${idx + 1}`}
-                style={{
-                  maxWidth: '15vh',
-                  minHeight: '20vh',
-                  aspectRatio: 'auto',
-                  border: '1px solid #888',
-                  display: 'block',
-                }}
+                className="max-w-[15vh] min-h-[20vh] aspect-auto border border-gray-400 block"
               />
             </button>
           ))}
@@ -158,21 +141,7 @@ export function PatternRecorder() {
       {previewIdx !== null && decodedImages.length > 0 && (
         <dialog
           open
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            background: 'rgba(0,0,0,0.8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            border: 'none',
-            padding: 0,
-            margin: 0,
-          }}
+          className="fixed top-0 left-0 w-screen h-screen bg-black/80 flex items-center justify-center z-[1000] border-none p-0 m-0"
         >
           <button
             type="button"
@@ -182,36 +151,15 @@ export function PatternRecorder() {
                 setPreviewIdx(null);
               }
             }}
-            style={{
-              position: 'absolute',
-              top: 24,
-              right: 24,
-              background: '#fff',
-              color: '#222',
-              border: 'none',
-              borderRadius: 4,
-              padding: '8px 16px',
-              cursor: 'pointer',
-              fontSize: 18,
-              zIndex: 1001,
-            }}
+            className="absolute top-6 right-6 bg-white text-gray-800 border-none rounded px-4 py-2 cursor-pointer text-lg z-[1001]"
             aria-label="Close preview"
-            // autoFocus removed for accessibility
           >
             Close
           </button>
           <img
             src={decodedImages[previewIdx]}
             alt={`Frame ${previewIdx + 1}`}
-            style={{
-              maxWidth: '54vh',
-              minHeight: '72vh',
-              aspectRatio: 'auto',
-              border: '4px solid #fff',
-              boxShadow: '0 0 24px #000',
-              background: '#222',
-              display: 'block',
-            }}
+            className="max-w-[54vh] min-h-[72vh] aspect-auto border-4 border-white shadow-2xl bg-gray-900 block"
           />
         </dialog>
       )}
