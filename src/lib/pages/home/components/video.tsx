@@ -8,6 +8,7 @@ import {
 import { changeFrameRate } from '@/lib/utils/stream';
 
 export function PatternRecorder() {
+  const galleryRef = useRef<HTMLDivElement>(null);
   const { liveRef, startCamera, stopCamera, recording } = useCamera();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -81,6 +82,12 @@ export function PatternRecorder() {
     // Decode and render images
     const decoded = await decodeFramesToImages(frames, ctx, canvasRef.current);
     setDecodedImages(decoded);
+    // Scroll to bottom of gallery with smooth animation
+    setTimeout(() => {
+      if (galleryRef.current) {
+        galleryRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    }, 100);
   };
 
   useEffect(() => {
@@ -107,6 +114,7 @@ export function PatternRecorder() {
 
       {decodedImages.length > 0 && (
         <div
+          ref={galleryRef}
           style={{
             display: 'flex',
             flexWrap: 'wrap',
