@@ -7,6 +7,7 @@ export default defineConfig({
       include: ['src/utils/**/**.{ts,tsx,js,jsx}'],
     },
     globals: true,
+    setupFiles: ['./setup-tests.ts'],
   },
   plugins: [tsConfigPaths()],
 });
