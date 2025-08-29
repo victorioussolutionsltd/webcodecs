@@ -48,6 +48,7 @@ export const Video = () => {
   };
 
   const recordPattern = async () => {
+    await startCamera();
     if (!(liveRef.current && canvasRef.current)) {
       return;
     }
@@ -88,6 +89,8 @@ export const Video = () => {
     // Decode and render images
     const decoded = await decodeFramesToImages(frames, ctx, canvasRef.current);
     setDecodedImages(decoded);
+
+    stopCamera();
     // Scroll to bottom of gallery with smooth animation
     setTimeout(() => {
       if (galleryRef.current) {
@@ -98,11 +101,7 @@ export const Video = () => {
 
   useEffect(() => {
     startCamera();
-    return () => {
-      stopCamera();
-      videoEncoder?.close();
-    };
-  }, [videoEncoder, startCamera, stopCamera]);
+  }, [startCamera]);
 
   return (
     <div className="grid gap-3">
@@ -120,7 +119,9 @@ export const Video = () => {
           {recording.current ? 'Recording...' : 'Record 10s Pattern'}
         </button>
       </div>
+
       <video ref={liveRef} autoPlay muted playsInline className="w-[480px]" />
+
       <canvas ref={canvasRef} className="hidden" />
       <Gallery images={decodedImages} galleryRef={galleryRef} />
     </div>

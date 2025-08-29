@@ -41,7 +41,7 @@ export const CameraProvider: React.FC<{
     if (liveRef.current?.srcObject) {
       const tracks = (liveRef.current.srcObject as MediaStream).getTracks();
       tracks.forEach((track) => track.stop());
-      liveRef.current.srcObject = null;
+      // Do not set srcObject to null, just stop tracks to pause stream
     }
   }, []);
 
