@@ -8,7 +8,7 @@ import {
 } from '@/lib/utils/codec';
 import { changeFrameRate } from '@/lib/utils/stream';
 
-import { Gallery } from './Gallery';
+import { Gallery } from './gallery';
 
 export const Video = () => {
   const galleryRef = useRef<HTMLDivElement>(null);
