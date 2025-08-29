@@ -1,6 +1,34 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { captureAndEncodeFrames, decodeFramesToImages } from './codec';
+
+// Setup window and mock VideoDecoder before all tests
+beforeAll(() => {
+  (globalThis as unknown as { window: unknown }).window = globalThis;
+  (
+    globalThis as unknown as { window: { VideoDecoder: unknown } }
+  ).window.VideoDecoder = (opts: {
+    output: (frame: unknown) => void;
+    error: (err: unknown) => void;
+  }) => {
+    const outputCallback = opts.output;
+    return {
+      configure: vi.fn(),
+      decode: vi.fn(() => {
+        // Simulate one frame per chunk
+        outputCallback?.({ close: vi.fn() });
+      }),
+      flush: vi.fn(() => Promise.resolve()),
+      close: vi.fn(),
+    };
+  };
+});
+
+afterAll(() => {
+  delete (globalThis as unknown as { window: { VideoDecoder: unknown } }).window
+    .VideoDecoder;
+  delete (globalThis as unknown as { window: unknown }).window;
+});
 
 describe('codec utils', () => {
   it('decodeFramesToImages returns image data URLs for encoded chunks', async () => {
@@ -13,12 +41,6 @@ describe('codec utils', () => {
       toDataURL: vi.fn(() => dataUrl),
     } as unknown as HTMLCanvasElement;
 
-    // Mocks for VideoFrame and EncodedVideoChunk
-    class MockVideoFrame {
-      close() {
-        /* mock close */
-      }
-    }
     // Mock encoded chunk with required properties
     const chunk = {
       byteLength: 1,
@@ -28,37 +50,9 @@ describe('codec utils', () => {
       copyTo: vi.fn(),
     } as EncodedVideoChunk;
 
-    // Mock VideoDecoder
-    const outputFrames: Array<MockVideoFrame> = [
-      new MockVideoFrame(),
-      new MockVideoFrame(),
-    ];
-    let outputCallback: ((frame: MockVideoFrame) => void) | null = null;
-    const decoderMock = {
-      configure: vi.fn(),
-      decode: vi.fn(() => {
-        if (outputCallback !== null) {
-          outputFrames.forEach((frame) => outputCallback?.(frame));
-        }
-      }),
-      flush: vi.fn(() => Promise.resolve()),
-      close: vi.fn(),
-    };
-    (globalThis as { window: unknown }).window = {
-      VideoDecoder: (opts: {
-        output: (frame: MockVideoFrame) => void;
-        error: (err: unknown) => void;
-      }) => {
-        outputCallback = opts.output;
-        return decoderMock;
-      },
-    };
-
     // Run test
     const result = await decodeFramesToImages([chunk, chunk], ctx, canvas);
-    expect(result).toEqual([dataUrl, dataUrl, dataUrl, dataUrl]);
-    // Clean up
-    delete (globalThis as { window: unknown }).window;
+    expect(result).toEqual([dataUrl, dataUrl]);
   });
 
   it('captureAndEncodeFrames throws if no videoTrack', async () => {
