@@ -9,21 +9,13 @@ This project demonstrates video frame capture, encoding, decoding, and interacti
 - The encoded frames are then decoded and displayed as images in a gallery.
 - Each image in the gallery can be zoomed by clicking on it.
 
-pnpm i
+# Steps
 
-# Bootstrap Project
+This project was bootstrapped using a modern frontend toolchain. 
 
-This project was bootstrapped using a modern frontend toolchain. To create a similar project from scratch, you can use a project scaffolding tool such as Vite, Create React App, or similar.
-
-## How to Bootstrap a Project
-
-1. Choose a frontend framework (e.g., React, Vue, Svelte).
-2. Use a scaffolding tool to generate the initial project structure:
-  - For Vite: `npm create vite@latest`
-  - For Create React App: `npx create-react-app my-app`
-3. Install dependencies:
+1. Install dependencies:
   - `npm install` or `pnpm install`
-4. Start the development server:
+2. Start the development server:
   - `npm run dev` or `npm start`
 
 Refer to the documentation of your chosen tool for more details.
