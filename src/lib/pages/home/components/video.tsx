@@ -15,6 +15,7 @@ export const Video = () => {
   const { liveRef, startCamera, stopCamera, recording } = useCamera();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [decodedImages, setDecodedImages] = useState<Array<string>>([]);
+  const [canPlay, setCanPlay] = useState(false);
 
   let videoEncoder: VideoEncoder | null = null;
   let frames: Array<EncodedVideoChunk> = [];
@@ -100,6 +101,7 @@ export const Video = () => {
   };
 
   useEffect(() => {
+    setCanPlay(false);
     startCamera();
   }, [startCamera]);
 
@@ -120,7 +122,21 @@ export const Video = () => {
         </button>
       </div>
 
-      <video ref={liveRef} autoPlay muted playsInline className="w-[480px]" />
+      <div className="relative w-[100%] h-[80vh]">
+        <video
+          ref={liveRef}
+          autoPlay
+          muted
+          playsInline
+          className="w-full h-full"
+          onCanPlay={() => setCanPlay(true)}
+        />
+        {!canPlay && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+          </div>
+        )}
+      </div>
 
       <canvas ref={canvasRef} className="hidden" />
       <Gallery images={decodedImages} galleryRef={galleryRef} />
