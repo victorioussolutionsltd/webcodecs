@@ -107,18 +107,21 @@ export const Video = () => {
 
   return (
     <div className="grid gap-3">
-      <div className="flex gap-2">
+      <div className="flex justify-center gap-2">
         <button
           type="button"
           onClick={recordPattern}
           disabled={recording.current}
           className={
-            recording.current
+            (recording.current
               ? 'px-6 py-3 text-xl font-bold rounded-lg border-none bg-gradient-to-r from-gray-400 to-gray-300 text-white shadow-md cursor-not-allowed mb-2 transition'
-              : 'px-6 py-3 text-xl font-bold rounded-lg border-none bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg cursor-pointer mb-2 transition hover:from-cyan-400 hover:to-blue-400 focus:outline-none'
+              : 'px-6 py-3 text-xl font-bold rounded-lg border-none bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg cursor-pointer mb-2 transition hover:from-cyan-400 hover:to-blue-400 focus:outline-none') +
+            ' w-[220px] text-center'
           }
         >
-          {recording.current ? 'Recording...' : 'Record 10s Pattern'}
+          <span className="inline-block w-full">
+            {recording.current ? 'Recording...' : 'Record 10s Pattern'}
+          </span>
         </button>
       </div>
 
@@ -130,6 +133,7 @@ export const Video = () => {
           playsInline
           className="w-full h-full"
           onCanPlay={() => setCanPlay(true)}
+          style={{ visibility: canPlay ? 'visible' : 'hidden' }}
         />
         {!canPlay && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10">
