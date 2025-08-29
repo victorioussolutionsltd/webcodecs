@@ -14,8 +14,8 @@ This project demonstrates video frame capture, encoding, decoding, and interacti
 This project was bootstrapped using a modern frontend toolchain. 
 
 1. Install dependencies:
-  - `npm install` or `pnpm install`
+  - `pnpm install`
 2. Start the development server:
-  - `npm run dev` or `npm start`
+  - `pnpm start`
 
 Refer to the documentation of your chosen tool for more details.
